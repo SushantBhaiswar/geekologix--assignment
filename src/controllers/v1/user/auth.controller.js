@@ -6,13 +6,13 @@ const utility = require('../../../utils/helper');
 
 
 const register = catchAsync(async (req, res) => {
-    const data = authServices.createUser(req, session)
+    const data = authServices.createUser(req)
 
     res.sendJSONResponse({
         code: httpStatus.OK,
         status: true,
-        message: utility.getuserMessagess(`authMessages.signupSuccessfully${isEmailVerified ? 'Admin' : ''}`),
-        data: { result: { userId: _id, type: (data.user.role == "client") ? data.userDetails.category : data.userDetails.registrationNumber.type, isEmailVerified, isPrefrenceSet, accountVerifiedStatus } },
+        message: utility.getuserMessagess(`authMessages.signupSuccessfully${true ? 'Admin' : ''}`),
+        data: {},
     })
 
 });
@@ -52,7 +52,7 @@ const sendVerificationCode = catchAsync(async (req, res) => {
     const { userDetails } = user;
     const otp = await authServices.saveOtp(userDetails.userId, req.body.type);
 
-   
+
 
     res.sendJSONResponse({
         code: httpStatus.OK,

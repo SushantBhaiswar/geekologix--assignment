@@ -2,8 +2,9 @@
 const user = require('../../../models/user.model')
 const createUser = async (req) => {
     const { email, password, firstName, lastName, profileImage } = req?.body
-    const userData = user.add(email, password, firstName, lastName, profileImage)
-    console.log("🚀 ~ createUser ~ users:", users)
+    console.log("🚀 ~ createUser ~ req?.body:", req?.body)
+    const userData = await user.add(email, password, firstName, lastName, profileImage)
+    console.log("🚀 ~ createUser ~ users:", userData)
 };
 
 

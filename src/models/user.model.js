@@ -4,7 +4,7 @@ const User = {};
 
 // Initialize table if not exists
 User.init = async () => {
-    const query = `
+  const query = `
     CREATE TABLE IF NOT EXISTS users (
       id INT AUTO_INCREMENT PRIMARY KEY,
       email VARCHAR(255) NOT NULL UNIQUE,
@@ -18,43 +18,44 @@ User.init = async () => {
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
   `;
-    await db.query(query);
+  await db.query(query);
 };
 
 // Add a user
 User.add = async (data) => {
-    const query = `
+  const query = `
     INSERT INTO users ( email, password, firstName, lastName,profileImage)
     VALUES (?, ?, ?, ?);
-  `;
-    const result = await db.query(query, [
-        data.email,
-        data.password,
-        data.role || 'user',
-    ]);
-    return result.insertId;
+    `;
+  const result = await db.query(query, [
+    data.email,
+    data.password,
+    data.role || 'user',
+  ]);
+  console.log("🚀 ~ User.add= ~ result:", result)
+  return result.insertId;
 };
 
 // Find a user by email
 User.findByEmail = async (email) => {
-    const query = `
+  const query = `
     SELECT * FROM users WHERE email = ?;
   `;
-    const rows = await db.query(query, [email]);
-    return rows[0];
+  const rows = await db.query(query, [email]);
+  return rows[0];
 };
 
 // Update user
 User.update = async (id, updates) => {
-    const fields = Object.keys(updates)
-        .map((key) => `${key} = ?`)
-        .join(', ');
-    const values = Object.values(updates);
+  const fields = Object.keys(updates)
+    .map((key) => `${key} = ?`)
+    .join(', ');
+  const values = Object.values(updates);
 
-    const query = `
+  const query = `
     UPDATE users SET ${fields} WHERE id = ?;
   `;
-    await db.query(query, [...values, id]);
+  await db.query(query, [...values, id]);
 };
 
 module.exports = User;
