@@ -7,9 +7,6 @@ const utility = require('../../../utils/helper');
 
 const register = catchAsync(async (req, res) => {
     const data = authServices.createUser(req, session)
-    const { email, _id, isEmailVerified, bounceCount, isPrefrenceSet, accountVerifiedStatus } = data.user;
-    const receiverdata = { ...JSON.parse(JSON.stringify(data.user)), userDetails: JSON.parse(JSON.stringify(data.userDetails)) }
-    if (!isEmailVerified && bounceCount < 3) await authServices.sendVerificationEmail(receiverdata, req);
 
     res.sendJSONResponse({
         code: httpStatus.OK,

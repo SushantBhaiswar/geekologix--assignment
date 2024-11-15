@@ -9,6 +9,8 @@ const retriveProfile = {
 const updateProfile = {
     params: Joi.object().keys({
         userId: Joi.string().required(),
+        profileImage: Joi.string().required(),
+
     }),
 };
 
