@@ -17,7 +17,7 @@ const register = catchAsync(async (req, res) => {
 });
 
 const login = catchAsync(async (req, res) => {
-    const user = await authServices.loginUserWithEmailAndPassword(req);
+    const user = await authServices.loginUser(req);
 
     return res.sendJSONResponse({
         code: httpStatus.CREATED,

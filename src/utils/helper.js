@@ -1,10 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-const axios = require('axios');
-const querystring = require('querystring');
-const fs = require('fs');
-const momentJs = require('moment');
-const config = require('../config/config');
-
+const { Log } = require('../models/index')
 
 const adminMessagessEn = require('../lang/en/adminMessages.json');
 const getuserMessagessEn = require('../lang/en/userMessages.json');
@@ -70,11 +64,31 @@ const getadminMessagess = (messageKey, lang = 'en') => {
 };
 
 
+const logResponse = async ({ req, data, message, status, statusCode = 200 }) => {
 
+  const ip =
+    req.headers['ip-address'] || req.headers['x-real-ip'] ||
+    req.socket.remoteAddress ||
+    req.connection.remoteAddress ||
+    (req.connection.socket ? req.connection.socket.remoteAddress : null) ||
+    req.headers['x-forwarded-for']
+
+  await Log.create({
+    uri: req.originalUrl,
+    headers: req.headers,
+    method: req.method,
+    body: req.body,
+    param: req.params,
+    ip_address: ip,
+    status: statusCode,
+    response: { data, message, code: statusCode, status },
+  });
+};
 
 
 module.exports = {
   getuserMessagess,
   getadminMessagess,
   geterrorMessagess,
+  logResponse,
 };

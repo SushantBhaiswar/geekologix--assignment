@@ -1,6 +1,8 @@
 {
     "authError": {
-        "emailExist": "Email you are tryig to register is already exist!"
+        "emailExist": "Email you are tryig to register is already exist!",
+        "invalidLogin": "Invalid login credeantials! Email not exist.",
+        "invalidPass": "Invalid password"
     },
     "userMessages": {}
 }

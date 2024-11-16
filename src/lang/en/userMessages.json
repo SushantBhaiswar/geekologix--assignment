@@ -1,12 +1,13 @@
 {
-    "commonMessage": {
-      "success": "Success",
-      "invalidRequest": "Invalid request, Please reload the page and try again.",
-      "serverError": "An unexpected error has occured. To solve the issue, contact the person responsible for your Server."
-    },
-    "authMessages": {
-      "signupSuccessfully" : "user registred successfully!"
-    },
-    "userMessages": {}
-    
-  }
+  "commonMessage": {
+    "success": "Success",
+    "invalidRequest": "Invalid request, Please reload the page and try again.",
+    "serverError": "An unexpected error has occured. To solve the issue, contact the person responsible for your Server."
+  },
+  "authMessages": {
+    "signupSuccessfully": "User registred successfully!",
+    "loginSuccessfully": "Login successfully!"
+  
+  },
+  "userMessages": {}
+}

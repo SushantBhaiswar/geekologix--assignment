@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const ApiError = require('../../../utils/apiError')
 const httpStatus = require('http-status');
 const { geterrorMessagess } = require('../../../utils/helper');
-
+const token = require('./token.services')
 const createUser = async (req) => {
 
     const createQuery = `
@@ -32,7 +32,17 @@ const createUser = async (req) => {
 
 };
 
+const loginUser = async (req) => {
+    const { email, password } = req?.body;
+    const userData = await user.findByEmail(email)
+    if (userData.length == 0) throw new ApiError(httpStatus.NOT_FOUND, geterrorMessagess('authError.invalidLogin'))
 
+    if (!await user.comparePassword(password, userData?.password,)) throw new ApiError(httpStatus.NOT_FOUND, geterrorMessagess('authError.invalidPass'))
+
+    const tokens = await token.generateAuthTokens(userData?.id, true)
+    delete user.password
+    return { user: userData, tokens }
+}
 const verifyEmail = async (userId, otp) => {
 
 };
@@ -41,5 +51,5 @@ module.exports = {
 
     verifyEmail,
     createUser,
-
+    loginUser,
 }

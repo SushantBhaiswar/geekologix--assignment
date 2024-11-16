@@ -38,8 +38,9 @@ User.comparePassword = async (inputPassword, storedHashedPassword) => {
 
 // Find a user by email
 User.findByEmail = async (email) => {
-  const query = ` SELECT * FROM users WHERE email = ?;`;
-  const rows = await db.query(query, [email]);
+  const query = `SELECT id, email, firstName, lastName, password, profileImage, role
+               FROM users WHERE email = ? AND isDeleted = ?`;
+  const rows = await db.query(query, [email, false]);
   return rows[0];
 };
 
