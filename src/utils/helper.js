@@ -71,36 +71,10 @@ const getadminMessagess = (messageKey, lang = 'en') => {
 
 
 
-const logData = (data, reqFileName = '') => {
-  const _GMTDate = momentJs.utc().format('YYYY-MM-DD');
 
-  let fileName = reqFileName;
-  if (!fileName) {
-    fileName = _GMTDate;
-    fileName += '.txt';
-  }
-  fs.appendFile(`logs/${fileName}`, `\n\n${new Date()}\n\n${data}`, function (err) {
-    if (err) throw err;
-  });
-};
-
-const setResponse = (req, addDataKey = 0) => {
-  const response = {
-    code: 400,
-    status: false,
-    isShowMessage: false,
-    message: getadminMessagess('commonMessage.invalidRequest'),
-  };
-  if (addDataKey) {
-    response.data = {};
-  }
-  return response;
-};
 
 module.exports = {
   getuserMessagess,
   getadminMessagess,
-  logData,
   geterrorMessagess,
-  setResponse,
 };

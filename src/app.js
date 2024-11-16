@@ -11,11 +11,15 @@ const config = require('./config/config');
 const { jwtStrategy, jwtStrategyForRecovery } = require('./config/passport.js');
 //const { authLimiter } = require('./middlewares/rateLimiter');
 const v1Routes = require('./routes/v1');
-//const { errorConverter, errorHandler } = require('./middlewares/error');
+const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/apiError');
 const utils = require('./utils/helper');
 const app = express();
 
+app.use((req, res, next) => {
+  req._startTime = Date.now(); // Store the current timestamp
+  next();
+});
 
 app.set('trust proxy', true)
 // set security HTTP headers
@@ -66,10 +70,10 @@ app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
 });
 // convert error to ApiError, if needed
-// app.use(errorConverter);
+app.use(errorConverter);
 
 // // handle error
-// app.use(errorHandler);
+app.use(errorHandler);
 
 /**
  *
@@ -80,7 +84,7 @@ app.use((req, res, next) => {
  */
 app.response.sendJSONResponse = function ({ code, status = true, message, data, isShowMessage = true }) {
 
-  //utils.logResponse({ req: this.req, data, message, status, statusCode: code });
+  utils.logResponse({ req: this.req, data, message, status, statusCode: code });
   return this.status(code).json({ code, status, message, isShowMessage, data });
 };
 

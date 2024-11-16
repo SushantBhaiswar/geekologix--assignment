@@ -2,6 +2,7 @@ const express = require('express');
 const app = require('./app');
 const { initDB } = require('./db');
 const User = require('./models/user.model');
+const Log = require('./models/log.model');
 const logger = require('./config/logger');
 const config = require('./config/config');
 
@@ -10,6 +11,7 @@ const config = require('./config/config');
         // Initialize database and tables
         await initDB();
         await User.init();
+        await Log.init();
 
 
         // Start the server
