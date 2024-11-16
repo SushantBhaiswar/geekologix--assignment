@@ -5,7 +5,7 @@
       "serverError": "An unexpected error has occured. To solve the issue, contact the person responsible for your Server."
     },
     "authMessages": {
-      "test" : "All working fine!"
+      "signupSuccessfully" : "user registred successfully!"
     },
     "userMessages": {}
     

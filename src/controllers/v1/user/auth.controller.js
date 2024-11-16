@@ -6,13 +6,12 @@ const utility = require('../../../utils/helper');
 
 
 const register = catchAsync(async (req, res) => {
-    const data = authServices.createUser(req)
+    await authServices.createUser(req)
 
     res.sendJSONResponse({
         code: httpStatus.OK,
         status: true,
-        message: utility.getuserMessagess(`authMessages.signupSuccessfully${true ? 'Admin' : ''}`),
-        data: {},
+        message: utility.getuserMessagess(`authMessages.signupSuccessfully`),
     })
 
 });

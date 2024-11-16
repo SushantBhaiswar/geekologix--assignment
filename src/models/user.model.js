@@ -1,4 +1,5 @@
 const db = require('../db');
+const bcrypt = require('bcryptjs');
 
 const User = {};
 
@@ -14,6 +15,7 @@ User.init = async () => {
       profileImage VARCHAR(255),
       role VARCHAR(50) DEFAULT 'user',
       isDeleted BOOLEAN DEFAULT false,
+      isEmailVarified BOOLEAN DEFAULT false,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
@@ -21,26 +23,22 @@ User.init = async () => {
   await db.query(query);
 };
 
-// Add a user
-User.add = async (data) => {
-  const query = `
-    INSERT INTO users ( email, password, firstName, lastName,profileImage)
-    VALUES (?, ?, ?, ?);
-    `;
-  const result = await db.query(query, [
-    data.email,
-    data.password,
-    data.role || 'user',
-  ]);
-  console.log("🚀 ~ User.add= ~ result:", result)
-  return result.insertId;
-};
+// find user by id
+User.findById = async (id) => {
+  const query = `SELCT * FROM users WHERE id = ?`
+  const [row] = await db.query(query, [id])
+  return row
+}
+
+// compare password
+User.comparePassword = async (inputPassword, storedHashedPassword) => {
+  return await bcrypt.compare(inputPassword, storedHashedPassword);
+
+}
 
 // Find a user by email
 User.findByEmail = async (email) => {
-  const query = `
-    SELECT * FROM users WHERE email = ?;
-  `;
+  const query = ` SELECT * FROM users WHERE email = ?;`;
   const rows = await db.query(query, [email]);
   return rows[0];
 };

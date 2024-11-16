@@ -1,0 +1,6 @@
+{
+    "authError": {
+        "emailExist": "Email you are tryig to register is already exist!"
+    },
+    "userMessages": {}
+}

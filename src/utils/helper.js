@@ -8,6 +8,7 @@ const config = require('../config/config');
 
 const adminMessagessEn = require('../lang/en/adminMessages.json');
 const getuserMessagessEn = require('../lang/en/userMessages.json');
+const geterrorMessagessEn = require('../lang/en/errorMessages.json');
 
 
 
@@ -18,9 +19,23 @@ const getuserMessagess = (messageKey, lang = 'en') => {
     apiMessagesSource = getuserMessagessEn;
   }
 
-  // split message key from DOT....
-  // zero index represent source message object key
-  // one index represent message key
+
+  const messageKeyArr = messageKey.split('.');
+  const sourceMessageObjKey = messageKeyArr[0];
+  const tempMessageKey = messageKeyArr[1];
+
+  if (tempMessageKey in apiMessagesSource[sourceMessageObjKey]) {
+    return apiMessagesSource[sourceMessageObjKey][tempMessageKey];
+  }
+  return 'No appropriate message found for api.';
+};
+
+const geterrorMessagess = (messageKey, lang = 'en') => {
+  let apiMessagesSource;
+  if (lang === 'en') {
+    apiMessagesSource = geterrorMessagessEn;
+  }
+
 
   const messageKeyArr = messageKey.split('.');
   const sourceMessageObjKey = messageKeyArr[0];
@@ -43,9 +58,6 @@ const getadminMessagess = (messageKey, lang = 'en') => {
     apiMessagesSource = adminMessagessEn;
   }
 
-  // split message key from DOT....
-  // zero index represent source message object key
-  // one index represent message key
 
   const messageKeyArr = messageKey.split('.');
   const sourceMessageObjKey = messageKeyArr[0];
@@ -89,5 +101,6 @@ module.exports = {
   getuserMessagess,
   getadminMessagess,
   logData,
+  geterrorMessagess,
   setResponse,
 };
