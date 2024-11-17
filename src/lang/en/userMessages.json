@@ -7,9 +7,15 @@
   "authMessages": {
     "signupSuccessfully": "User registred successfully!",
     "loginSuccessfully": "Login successfully!",
-    "logoutSuccessfully": "Logout successfully!"
+    "logoutSuccessfully": "Logout successfully!",
+    "emailVerified": "Email verified successfully!",
+    "userNotFoundWithEmail": "Email not registred!",
+    "otpSentsuccessfully": "OTP snt successfully!",
+    "passwordUpdatedSuccess": "Password updated successfully!"
   },
   "userMessages": {
-    "profileGetSuccessfully" : "Profile data featched successfully!"
+    "profileGetSuccessfully": "Profile data featched successfully!",
+    "profileUpdated": "Profile updated successfully!",
+    "profileDeleted": "Profile deleted successfully!"
   }
 }

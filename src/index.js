@@ -4,6 +4,7 @@ const { initDB } = require('./db');
 const User = require('./models/user.model');
 const Log = require('./models/log.model');
 const Token = require('./models/token.model');
+const OTP = require('./models/otp.model');
 const logger = require('./config/logger');
 const config = require('./config/config');
 
@@ -14,7 +15,7 @@ const config = require('./config/config');
         await User.init();
         await Log.init();
         await Token.init();
-
+        await OTP.init();
 
         // Start the server
         const server = app.listen(config.port, () => {

@@ -15,7 +15,7 @@ User.init = async () => {
       profileImage VARCHAR(255),
       role VARCHAR(50) DEFAULT 'user',
       isDeleted BOOLEAN DEFAULT false,
-      isEmailVarified BOOLEAN DEFAULT false,
+      isEmailVerified BOOLEAN DEFAULT false,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
@@ -38,23 +38,11 @@ User.comparePassword = async (inputPassword, storedHashedPassword) => {
 
 // Find a user by email
 User.findByEmail = async (email) => {
-  const query = `SELECT id, email, firstName, lastName, password, profileImage, role
+  const query = `SELECT id, email, firstName, isEmailVerified, lastName, password, profileImage, role
                FROM users WHERE email = ? AND isDeleted = ?`;
   const rows = await db.query(query, [email, false]);
-  return rows[0]; 
+  return rows?.[0];
 };
 
-// Update user
-User.update = async (id, updates) => {
-  const fields = Object.keys(updates)
-    .map((key) => `${key} = ?`)
-    .join(', ');
-  const values = Object.values(updates);
-
-  const query = `
-    UPDATE users SET ${fields} WHERE id = ?;
-  `;
-  await db.query(query, [...values, id]);
-};
 
 module.exports = User;

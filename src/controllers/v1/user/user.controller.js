@@ -17,23 +17,23 @@ const retriveProfile = catchAsync(async (req, res) => {
 });
 
 const updateProfile = catchAsync(async (req, res) => {
-    await userServices.updatePassword(req, session);
+    await userServices.updateProfile(req);
     res.sendJSONResponse({
         code: httpStatus.OK,
         status: true,
-        message: utility.getuserMessagess('authMessages.passwordUpdatedSuccess'),
+        message: utility.getuserMessagess('userMessages.profileUpdated'),
     });
 
 
 });
 
 const deleteProfile = catchAsync(async (req, res) => {
-    await userServices.generateResetPasswordToken(req)
+    await userServices.deleteProfile(req)
 
     res.sendJSONResponse({
         code: httpStatus.OK,
         status: true,
-        message: utility.getuserMessagess('authMessages.resetPasswordEmailSuccess'),
+        message: utility.getuserMessagess('userMessages.profileDeleted'),
     });
 
 });

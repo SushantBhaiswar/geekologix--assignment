@@ -2,7 +2,13 @@
     "authError": {
         "emailExist": "Email you are tryig to register is already exist!",
         "invalidLogin": "Invalid login credeantials! Email not exist.",
-        "invalidPass": "Invalid password"
+        "invalidPass": "Invalid password",
+        "optExpired": "Your verification code has expired. Please request a new code",
+        "optNotFound": "OTP not found! Try regenerating again.",
+        "emailNotVerified": "Verify your Email to login.",
+        "emailAlreadyVerified": "Email already verified"
     },
-    "userMessages": {}
+    "userError": {
+        "userNotFound": "user not found it might be deleted"
+    }
 }

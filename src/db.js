@@ -1,12 +1,13 @@
 const mysql = require('mysql2/promise');
 const logger = require('./config/logger.js');
+const config = require('./config/config.js')
 
 // Update config keys for MySQL/MSSQL
 const dbConfig = {
-    host: 'localhost', // Use 'host' instead of 'server'
-    user: 'root',
-    password: '12345678',
-    database: 'user_managment',
+    host: config.database.HOST,
+    user: config.database.USER,
+    password: config.database.PASSWORD,
+    database: config.database.DATABASE_NAME,
 };
 
 // Function to initialize database

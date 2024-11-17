@@ -8,6 +8,6 @@ const auth = require('../../../middlewares/auth');
 const router = express.Router();
 router.get('/profile', auth('user'), userController.retriveProfile);
 router.patch('/update', auth('user'), validate(userValidation.updateProfile), userController.updateProfile);
-router.delete('/delete/account', auth('user'), validate(userValidation.deleteProfile), userController.deleteProfile);
+router.delete('/delete', auth('user'), userController.deleteProfile);
 
 module.exports = router;

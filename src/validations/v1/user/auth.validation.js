@@ -36,18 +36,10 @@ const refreshTokens = {
 const sendVerificationCode = {
     body: Joi.object().keys({
         email: Joi.string().email().required(),
-        type: Joi.string().required().valid('verifyEmail', 'resetPassword'),
+        type: Joi.string().required().valid('verifyEmail'),
     }),
 };
-const resendCode = {
-    params: Joi.object().keys({
-        userId: Joi.string().required(),
-    }),
-    body: Joi.object().keys({
-        type: Joi.string().required().valid('verifyEmail', 'resetPassword'),
-        role: Joi.string(),
-    }),
-};
+
 const verifyCode = {
     params: Joi.object().keys({
         code: Joi.string().required(),
@@ -66,14 +58,14 @@ const resetPassword = {
 const forgotPassword = {
     body: Joi.object().keys({
         email: Joi.string().email().required(),
-        role: Joi.string(),
+
     }),
 };
 const changePassword = {
     body: Joi.object().keys({
-        oldPassword: Joi.string().required(),
-        newPassword: Joi.string().required(),
-        role: Joi.string(),
+        currentPassword: Joi.string().required(),
+        newPassword: Joi.string().required().min(8),
+
     }),
 };
 
@@ -83,7 +75,6 @@ const verifyEmail = {
     }),
     body: Joi.object().keys({
         otp: Joi.number().required().min(99999).max(999999),
-        role: Joi.string(),
     }),
 };
 
@@ -93,7 +84,6 @@ module.exports = {
     logout,
     refreshTokens,
     sendVerificationCode,
-    resendCode,
     verifyCode,
     resetPassword,
     forgotPassword,

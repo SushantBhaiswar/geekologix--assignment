@@ -13,7 +13,10 @@ const verifyCallback = (req, resolve, reject, requiredRights, permissions) => as
         if (err || info || !user) {
             return reject(new ApiError(httpStatus.UNAUTHORIZED, err || 'Please Authenticate'));
         }
-
+        console.log(user.isEmailVerified)
+        if (!user.isEmailVerified) {
+            return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Your email is not verified!'));
+        }
         if (requiredRights && typeof requiredRights == 'string' && requiredRights != user.role) {
             return reject(new ApiError(httpStatus.UNAUTHORIZED, 'You do not have permission to perform this action'));
         }

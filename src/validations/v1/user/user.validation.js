@@ -1,13 +1,14 @@
 const Joi = require('joi');
 
 const retriveProfile = {
-    
+
 };
 
 const updateProfile = {
     params: Joi.object().keys({
-        userId: Joi.string().required(),
-        profileImage: Joi.string().required(),
+        profileImage: Joi.string(),
+        firstName: Joi.string(),
+        lastName: Joi.string(),
 
     }),
 };
