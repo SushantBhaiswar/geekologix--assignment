@@ -3,5 +3,10 @@ const tokenTypes = {
     REFRESH: 'refresh',
     RESET_PASSWORD: 'resetPassword',
 };
-
-module.exports = { tokenTypes }
+const adminData = {
+    email: 'assignment@gmail.com',
+    password: 'assignment@123',
+    firstName : 'super',
+    lastName : "admin"
+}
+module.exports = { tokenTypes ,adminData }

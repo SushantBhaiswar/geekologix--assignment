@@ -36,11 +36,11 @@ const logout = catchAsync(async (req, res) => {
 });
 
 const refreshTokens = catchAsync(async (req, res) => {
-    const tokens = await authServices.refreshAuth(req.body.refreshToken);
+    const tokens = await authServices.refreshAuth(req);
     res.sendJSONResponse({
         code: httpStatus.OK,
         status: true,
-        message: utility.getuserMessagess('commonMessage.success'),
+        message: utility.getuserMessagess('authMessages.refreshTokenGenerated'),
         data: { user: tokens.user, tokens: tokens.tokens },
     });
 });
@@ -79,17 +79,7 @@ const changePassword = catchAsync(async (req, res) => {
 
 });
 
-const forgotPassword = catchAsync(async (req, res) => {
-    const userInfo = await tokenService.generateResetPasswordToken(req)
 
-    res.sendJSONResponse({
-        code: httpStatus.OK,
-        status: true,
-        message: utility.getuserMessagess('authMessages.resetPasswordEmailSuccess'),
-    });
-
-
-});
 
 module.exports = {
     register,
@@ -99,5 +89,4 @@ module.exports = {
     sendVerificationCode,
     verifyEmail,
     changePassword,
-    forgotPassword,
 }

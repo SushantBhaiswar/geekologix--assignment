@@ -10,5 +10,8 @@
     },
     "userError": {
         "userNotFound": "user not found it might be deleted"
+    },
+    "adminError": {
+        "userNotFound": "user not found it might be deleted"
     }
 }

@@ -11,7 +11,8 @@
     "emailVerified": "Email verified successfully!",
     "userNotFoundWithEmail": "Email not registred!",
     "otpSentsuccessfully": "OTP snt successfully!",
-    "passwordUpdatedSuccess": "Password updated successfully!"
+    "passwordUpdatedSuccess": "Password updated successfully!",
+    "refreshTokenGenerated": "Access token generated!"
   },
   "userMessages": {
     "profileGetSuccessfully": "Profile data featched successfully!",

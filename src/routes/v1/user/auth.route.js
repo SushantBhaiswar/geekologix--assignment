@@ -13,6 +13,5 @@ router.post('/refresh-tokens', validate(authValidation.refreshTokens), authContr
 router.post('/sendVerificationCode', validate(authValidation.sendVerificationCode), authController.sendVerificationCode);
 router.post('/verify-email/:userId', validate(authValidation.verifyEmail), authController.verifyEmail);
 router.put('/changePassword', auth('user'), validate(authValidation.changePassword), authController.changePassword);
-router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 
 module.exports = router;

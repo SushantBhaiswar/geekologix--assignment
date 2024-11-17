@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "assignment": "cross-env NODE_ENV=assignment nodemon src/index.js",
-    "seeds": "node src/seeds/"
+    "createadmin": "node src/seeds/"
   },
   "keywords": [],
   "author": "Sushant Bhaiswar",

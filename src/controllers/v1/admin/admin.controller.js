@@ -6,35 +6,35 @@ const httpStatus = require('http-status');
 const catchAsync = require('../../../utils/catchAsync');
 
 const retriveData = catchAsync(async (req, res) => {
-    const _2FADetail = await adminServices.verifyEmail(req.params.userId, req.body.otp);
+    const response = await adminServices.retriveData(req);
 
     res.sendJSONResponse({
         code: httpStatus.OK,
         status: true,
-        message: utility.getuserMessagess('authMessages.emailVerified'),
-        data: { result: _2FADetail }
+        message: utility.getadminMessagess('adminMessages.profileGetSuccessfully'),
+        data: { result: response }
     });
 
 });
 
 const updateUser = catchAsync(async (req, res) => {
-    await adminServices.updatePassword(req, session);
+    await adminServices.updateProfile(req);
     res.sendJSONResponse({
         code: httpStatus.OK,
         status: true,
-        message: utility.getuserMessagess('authMessages.passwordUpdatedSuccess'),
+        message: utility.getadminMessagess('adminMessages.profileUpdated'),
     });
 
 
 });
 
 const deleteUser = catchAsync(async (req, res) => {
-    await adminServices.generateResetPasswordToken(req)
+    await adminServices.deleteProfile(req)
 
     res.sendJSONResponse({
         code: httpStatus.OK,
         status: true,
-        message: utility.getuserMessagess('authMessages.resetPasswordEmailSuccess'),
+        message: utility.getadminMessagess('adminMessages.profileDeleted'),
     });
 
 });

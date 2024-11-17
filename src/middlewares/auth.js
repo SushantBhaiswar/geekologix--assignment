@@ -8,8 +8,9 @@ const ApiError = require('../utils/apiError');
 const db = require('../db')
 
 
-const verifyCallback = (req, resolve, reject, requiredRights, permissions) => async (err, user, info) => {
+const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
     try {
+        console.log(err || info || !user)
         if (err || info || !user) {
             return reject(new ApiError(httpStatus.UNAUTHORIZED, err || 'Please Authenticate'));
         }

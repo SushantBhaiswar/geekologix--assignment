@@ -1,10 +1,13 @@
 {
-    "commonMessage": {
-      "success": "Success",
-      "invalidRequest": "Invalid request, Please reload the page and try again.",
-      "serverError": "An unexpected error has occured. To solve the issue, contact the person responsible for your Server."
-    },
-    "authMessages": {},
-    "adminMessages": {}
-    
+  "commonMessage": {
+    "success": "Success",
+    "invalidRequest": "Invalid request, Please reload the page and try again.",
+    "serverError": "An unexpected error has occured. To solve the issue, contact the person responsible for your Server."
+  },
+  "authMessages": {},
+  "adminMessages": {
+    "profileGetSuccessfully": "Profile data featched successfully!",
+    "profileUpdated": "Profile updated successfully!",
+    "profileDeleted": "Profile deleted successfully!"
   }
+}

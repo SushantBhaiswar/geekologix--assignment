@@ -8,6 +8,7 @@ const { geterrorMessagess } = require('../../../utils/helper');
 const token = require('./token.services')
 const { tokenTypes } = require('../../../config/enumValues');
 const emailServices = require('../../../utils/emailService')
+const tokenServices = require('./token.services')
 
 
 const createUser = async (req) => {
@@ -112,13 +113,29 @@ const changePassword = async (req) => {
     }
 };
 
+const refreshAuth = async (req) => {
+    const tokenQuery = 'SELECT * from tokens WHERE token = ? AND type = ?'
+    const userQuery = 'SELECT * from users WHERE id = ? AND isDeleted = ?'
+    const [refreshTokenDoc] = await db.query(tokenQuery, [req?.body?.refreshToken, tokenTypes.REFRESH]);
+    // if expired then ask user to login
+    const isExpired = new Date(refreshTokenDoc?.expires) < new Date();
+    if (isExpired || !refreshTokenDoc) throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid token');
+    console.log(refreshTokenDoc)
+    const user = await db.query(userQuery, [refreshTokenDoc?.user_id, false]);
+    if (user.length == 0) throw new ApiError(httpStatus.UNAUTHORIZED, geterrorMessagess('authError.userNotFoundWithEmail'));
 
+    // generate access token
+    const tokens = await tokenServices.generateAuthTokens(user?.[0]?.id, isExpired, refreshTokenDoc.deviceId);
 
+    return { tokens, user: user?.[0] };
+
+}
 module.exports = {
     logout,
     verifyEmail,
     createUser,
     loginUser,
+    refreshAuth,
     changePassword,
     sendVerificationCode
 }
