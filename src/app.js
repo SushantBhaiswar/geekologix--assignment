@@ -29,7 +29,7 @@ app.use(helmet());
 app.use(express.json());
 
 // parse urlencoded request body
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: '0.1kb', extended: true }));
 
 app.use(bodyParser.text({ type: 'text/plain', limit: '50mb' }));
 app.use('/assets', express.static('public'));

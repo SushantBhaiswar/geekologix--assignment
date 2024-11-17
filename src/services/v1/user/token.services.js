@@ -16,7 +16,7 @@ const db = require('../../../db')
  */
 const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
     const payload = {
-        sub: userId,
+        userId: userId,
         iat: moment().unix(),
         exp: expires.unix(),
         type,
@@ -33,13 +33,15 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
  * @param {boolean} [blacklisted]
  * @returns {Promise<Token>}
  */
-const saveToken = async (token, userId, expires, type) => {
-    const tokenQuery = `INSERT INTO tokens (token, user_id, expires, type) VALUES(?,?,?,?)`
+const saveToken = async (token, userId, expires, type, device_id) => {
+    console.log(device_id)
+    const tokenQuery = `INSERT INTO tokens (token, user_id, expires, type, device_id) VALUES(?,?,?,?,?)`
     await db.query(tokenQuery, [
         token,
         userId,
         expires.toDate(),
         type,
+        device_id
     ]);
     const row = await Token.findToken(userId)
     return row;
@@ -59,7 +61,7 @@ const verifyToken = (token, type) => {
             } else {
                 // If verification is successful, proceed to find the token document
                 try {
-                    const tokenDoc = await db.query(`SELECT * FROM tokens WHERE user_id = ? AND token = ? VALUES(? , ?)`, [payload.sub, token])
+                    const tokenDoc = await db.query(`SELECT * FROM tokens WHERE user_id = ? AND token = ? VALUES(? , ?)`, [payload.userId, token])
                     if (!tokenDoc) {
                         reject(new ApiError(httpStatus.BAD_REQUEST, 'The password reset link has timed out. Please return to the login page and try resetting your password again to generate a new link'));
                     } else {
@@ -73,7 +75,7 @@ const verifyToken = (token, type) => {
     });
 };
 
-const generateAuthTokens = async (user, refreshTokenExpired) => {
+const generateAuthTokens = async (user, refreshTokenExpired, deviceId) => {
 
     const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
     const accessToken = generateToken(user, accessTokenExpires, tokenTypes.ACCESS);
@@ -84,7 +86,7 @@ const generateAuthTokens = async (user, refreshTokenExpired) => {
     // if refresh token is not expired then generate access token only
     if (refreshTokenExpired) {
         refreshToken = await generateToken(user, refreshTokenExpires, tokenTypes.REFRESH);
-        await saveToken(refreshToken, user, refreshTokenExpires, tokenTypes.REFRESH);
+        await saveToken(refreshToken, user, refreshTokenExpires, tokenTypes.REFRESH, deviceId);
     }
     return {
         access: {

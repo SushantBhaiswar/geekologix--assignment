@@ -6,8 +6,10 @@
   },
   "authMessages": {
     "signupSuccessfully": "User registred successfully!",
-    "loginSuccessfully": "Login successfully!"
-  
+    "loginSuccessfully": "Login successfully!",
+    "logoutSuccessfully": "Logout successfully!"
   },
-  "userMessages": {}
+  "userMessages": {
+    "profileGetSuccessfully" : "Profile data featched successfully!"
+  }
 }

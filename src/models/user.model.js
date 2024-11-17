@@ -41,7 +41,7 @@ User.findByEmail = async (email) => {
   const query = `SELECT id, email, firstName, lastName, password, profileImage, role
                FROM users WHERE email = ? AND isDeleted = ?`;
   const rows = await db.query(query, [email, false]);
-  return rows[0];
+  return rows[0]; 
 };
 
 // Update user

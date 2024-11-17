@@ -10,6 +10,7 @@ Token.init = async () => {
     id INT AUTO_INCREMENT PRIMARY KEY,
     token VARCHAR(255) NOT NULL,
     user_id INT NOT NULL,
+    device_id  VARCHAR(255) NOT NULL,
     type ENUM('refresh', 'reset_password') NOT NULL,
     expires DATETIME NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

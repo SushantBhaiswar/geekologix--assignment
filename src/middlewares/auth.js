@@ -5,60 +5,39 @@
 const passport = require('passport');
 const httpStatus = require('http-status');
 const ApiError = require('../utils/apiError');
-
+const db = require('../db')
 
 
 const verifyCallback = (req, resolve, reject, requiredRights, permissions) => async (err, user, info) => {
-    if (err || info || !user) {
-        return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Pleasee authenticate'));
-    }
+    try {
+        if (err || info || !user) {
+            return reject(new ApiError(httpStatus.UNAUTHORIZED, err || 'Please Authenticate'));
+        }
 
-    if (requiredRights && typeof requiredRights == 'string' && requiredRights != user.role) {
-        return reject(new ApiError(httpStatus.UNAUTHORIZED, 'You do not have permission to perform this action'));
-    }
-
-    if (requiredRights && Array.isArray(requiredRights) && requiredRights.length != 0) {
-        if (requiredRights.indexOf(user.role) == -1) {
+        if (requiredRights && typeof requiredRights == 'string' && requiredRights != user.role) {
             return reject(new ApiError(httpStatus.UNAUTHORIZED, 'You do not have permission to perform this action'));
         }
+        if (!req?.headers?.['device_id']) return reject(new ApiError(httpStatus.UNAUTHORIZED, 'device id is required'));
+        const userDevices = await db.query(` SELECT * FROM tokens WHERE device_id = ? AND user_id = ?`, [req?.headers?.['device_id'], user?.id])
+        if (userDevices.length == 0) return reject(new ApiError(httpStatus.UNAUTHORIZED, 'please authenticate'));
 
-    }
-    // check for permission
-    if (permissions && permissions.length != 0 && user.role != 'admin') {
-        if (!user.permissions.includes('allAccess')) {
-            permissions.map((obj) => {
-                if (user.permissions.indexOf(obj) == -1)
-                    return reject(new ApiError(httpStatus.UNAUTHORIZED, 'You do not have permission to perform this action'));
-            });
+        // checking if multiple role have access
+        if (requiredRights && Array.isArray(requiredRights) && requiredRights.length != 0) {
+            if (requiredRights.indexOf(user.role) == -1) {
+                return reject(new ApiError(httpStatus.UNAUTHORIZED, 'You do not have permission to perform this action'));
+            }
+
         }
+
+        req.user = user;
+
+        // check whether user is trying to login with valid url
+        if (!req.originalUrl.includes(`v1/${user.role}`)) return reject(new ApiError(httpStatus.UNAUTHORIZED, `Invalid url try accessing with ${user.role == 'admin' ? 'user' : 'admin'}`))
+
+        resolve();
+    } catch (error) {
+        return reject(new ApiError(httpStatus.UNAUTHORIZED, error));
     }
-
-    // check if prefrences are set for candidate and client 
-    if (!['sub-admin', 'admin'].includes(user.role) && req.path != '/verify-2fa' && req.path != '/prefrence' && req.path != '/enable-2fa' && !user.userPrefrences)
-        return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Set preferences to access.'));
-
-    if (user.role == 'sub-admin') {
-        let assignedUserIds = await getSubadminUsers(user);
-        user.assignedUserIds = assignedUserIds;
-    }
-
-    req.user = user;
-
-    // check whether user is trying to login with valid url
-    const error = validateLoginUrl(req.user, req, reject)
-    if (error?.errorMsg) return reject(new ApiError(httpStatus.UNAUTHORIZED, error.errorMsg))
-
-
-    const userDevices = await userDevice.findOne({
-        user_id: req.user._id,
-        device_id: req.headers['device-id'],
-    });
-    if (!userDevices) return reject(new ApiError(httpStatus.UNAUTHORIZED, 'please authenticate'));
-
-    const token = await Token.findOne({ token: userDevices.refresh_token });
-    if (!token) return reject(new ApiError(httpStatus.UNAUTHORIZED, 'please authenticate'));
-
-    resolve();
 };
 
 const auth = (requiredRights, permissions) => async (req, res, next) => {

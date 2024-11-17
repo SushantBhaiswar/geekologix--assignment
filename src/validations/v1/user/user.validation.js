@@ -1,9 +1,7 @@
 const Joi = require('joi');
 
 const retriveProfile = {
-    params: Joi.object().keys({
-        userId: Joi.string().required(),
-    }),
+    
 };
 
 const updateProfile = {

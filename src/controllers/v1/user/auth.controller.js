@@ -9,7 +9,7 @@ const register = catchAsync(async (req, res) => {
     await authServices.createUser(req)
 
     res.sendJSONResponse({
-        code: httpStatus.OK,
+        code: httpStatus.CREATED,
         status: true,
         message: utility.getuserMessagess(`authMessages.signupSuccessfully`),
     })
@@ -20,7 +20,7 @@ const login = catchAsync(async (req, res) => {
     const user = await authServices.loginUser(req);
 
     return res.sendJSONResponse({
-        code: httpStatus.CREATED,
+        code: httpStatus.OK,
         status: true,
         message: utility.getuserMessagess('authMessages.loginSuccessfully'),
         data: user,

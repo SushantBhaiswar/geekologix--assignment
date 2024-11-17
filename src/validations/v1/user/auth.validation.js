@@ -12,6 +12,9 @@ const register = {
 };
 
 const login = {
+    Headers: Joi.object().keys({
+        device_id: Joi.string().required(),
+    }).unknown(true),
     body: Joi.object().keys({
         password: Joi.string().required(),
         email: Joi.string().required().email(),
