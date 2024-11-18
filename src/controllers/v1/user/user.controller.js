@@ -5,13 +5,13 @@ const utility = require('../../../utils/helper');
 
 
 const retriveProfile = catchAsync(async (req, res) => {
-    const _2FADetail = await userServices.getProfile(req);
+    const response = await userServices.getProfile(req);
 
     res.sendJSONResponse({
         code: httpStatus.OK,
         status: true,
         message: utility.getuserMessagess('userMessages.profileGetSuccessfully'),
-        data: _2FADetail
+        data: response
     });
 
 });

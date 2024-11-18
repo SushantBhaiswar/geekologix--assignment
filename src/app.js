@@ -7,9 +7,8 @@ const cors = require('cors');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const httpStatus = require('http-status');
-const config = require('./config/config');
 const { jwtStrategy } = require('./config/passport.js');
-//const { authLimiter } = require('./middlewares/rateLimiter');
+const { authLimiter } = require('./middlewares/rateLimiter.js');
 const v1Routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/apiError');
@@ -29,7 +28,11 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: '0.1kb', extended: true }));
 
 app.use(bodyParser.text({ type: 'text/plain', limit: '50mb' }));
-app.use(multer().any())
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+app.use(upload.any());
+
 // sanitize request data
 app.use(xss());
 app.use(mongoSanitize());
@@ -52,9 +55,7 @@ app.use((req, res, next) => {
 
 
 // limit repeated failed requests to auth endpoints
-// if (config.env === 'production') {
-//   app.use('/v1/auth', authLimiter);
-// }
+app.use('/v1', authLimiter);
 
 // v1 api routes
 app.use('/v1', v1Routes);

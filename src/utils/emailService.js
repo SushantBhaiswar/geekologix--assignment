@@ -38,46 +38,6 @@ const findTemplete = (subject) => {
     if (subject == 'Email Verification') return verifyEmail;
 };
 
-
-/**
- * Send reset password email
- * @param {string} to
- * @param {string} token
- * @returns {Promise}
- */
-// const sendResetPasswordEmail = async (to, data, token, jobCategory) => {
-//     const subject = 'Reset password';
-//     data = data.toObject();
-//     data.resetPasswordUrl = `${config.EMAIL_REDIRECT_URL_COMMON}/forgot-password/verify?token=${token}`;
-//     let platformName = 'MedLocum';
-
-
-//     if (jobCategory == 'Pharmacy') {
-//         data.platformName = 'Med Pharm';
-//         data.url = config.MED_PHARMA;
-//         data.resetPasswordUrl = `${config.EMAIL_REDIRECT_URL_PHARMA}/forgot-password/verify?token=${token}`;
-//     }
-//     else if (jobCategory == 'Primary Care') {
-//         data.platformName = 'Med Doc';
-//         data.url = config.MED_DOC;
-//         data.resetPasswordUrl = `${config.EMAIL_REDIRECT_URL_DOC}/forgot-password/verify?token=${token}`;
-//     } else {
-//         data.platformName = 'MedLocum';
-//         data.url = config.MED_COMMON_LOGO;
-//         data.resetPasswordUrl = `${config.EMAIL_REDIRECT_URL_COMMON}/forgot-password/verify?token=${token}`;
-//     }
-//     const templateBody = handlebars.compile(forgotPasswordHtml);
-//     const notification = await eventNotification.findOne({ uniqueId: 'forgot_password' })
-//     const dynamicObj = { PLATFORMNAME: data.platformName }
-//     data.title = makeContentDynamc(dynamicObj, notification.title)
-//     data.body = makeContentDynamc(dynamicObj, notification.body)
-//     data.currentYear = new Date().getFullYear();
-
-//     const html = templateBody(data);
-//     await sendEmail(to, subject, html);
-// };
-
-
 const compileEmail = async (to, data, subject) => {
     data.subject = subject;
     const template = findTemplete(subject)

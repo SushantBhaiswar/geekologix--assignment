@@ -50,6 +50,7 @@ module.exports = {
         TEMP_FOLDER_PATH: envVars.TEMP_FOLDER_PATH,
         DOCUMENT_FOLDER_PATH: envVars.DOCUMENT_FOLDER_PATH,
         DOWNLOAD_URL_EXPIRY: envVars.DOWNLOAD_URL_EXPIRY,
+        LOCATION: envVars.LOCATION,
     },
 
     database: {

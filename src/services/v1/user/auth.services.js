@@ -9,20 +9,22 @@ const token = require('./token.services')
 const { tokenTypes } = require('../../../config/enumValues');
 const emailServices = require('../../../utils/emailService')
 const tokenServices = require('./token.services')
-
+const aws = require('../../../libraries/aws')
 
 const createUser = async (req) => {
-    console.log("req?.body?.profileImage", req.file)
-    return
+    const file = req?.files?.[0]
+    
+    // check email uniqueness
+    const emailFound = await user.findByEmail(req?.body?.email)
+    if (emailFound) throw new ApiError(httpStatus.CONFLICT, geterrorMessagess('authError.emailExist'))
+
     const createQuery = `
     INSERT INTO users ( email, password, firstName, lastName, profileImage, role)
     VALUES (?, ?, ?,?, ?,?);
     `;
-
-
-    // check email uniqueness
-    const emailFound = await user.findByEmail(req?.body?.email)
-    if (emailFound) throw new ApiError(httpStatus.CONFLICT, geterrorMessagess('authError.emailExist'))
+    if (file) {
+        req.body.profileImage = await aws.uploadFile(file)
+    }
 
     // bcrypt the password
     const hashedPassword = await bcrypt.hash(req?.body.password, 8);
@@ -70,7 +72,6 @@ const logout = async (req) => {
 };
 
 const verifyEmail = async (req) => {
-    console.log(req?.params?.userId)
     const optData = await Otp.find(req?.params?.userId, 'verifyEmail')
 
     if (!optData) throw new ApiError(httpStatus.NOT_FOUND, geterrorMessagess('authError.optNotFound'))
