@@ -12,7 +12,8 @@ const tokenServices = require('./token.services')
 
 
 const createUser = async (req) => {
-
+    console.log("req?.body?.profileImage", req.file)
+    return
     const createQuery = `
     INSERT INTO users ( email, password, firstName, lastName, profileImage, role)
     VALUES (?, ?, ?,?, ?,?);

@@ -8,18 +8,15 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const httpStatus = require('http-status');
 const config = require('./config/config');
-const { jwtStrategy, jwtStrategyForRecovery } = require('./config/passport.js');
+const { jwtStrategy } = require('./config/passport.js');
 //const { authLimiter } = require('./middlewares/rateLimiter');
 const v1Routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/apiError');
 const utils = require('./utils/helper');
 const app = express();
+const multer = require('multer');
 
-app.use((req, res, next) => {
-  req._startTime = Date.now(); // Store the current timestamp
-  next();
-});
 
 app.set('trust proxy', true)
 // set security HTTP headers
@@ -32,9 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: '0.1kb', extended: true }));
 
 app.use(bodyParser.text({ type: 'text/plain', limit: '50mb' }));
-app.use('/assets', express.static('public'));
-
-
+app.use(multer().any())
 // sanitize request data
 app.use(xss());
 app.use(mongoSanitize());
